@@ -63,7 +63,6 @@ navigator.geolocation.watchPosition(
         }
 
         userInnerCircle.bindPopup('Twoja lokalizacja!');
-        userInnerCircle.openPopup();
         if (!scale) {
             scale = L.control.scale().addTo(map);
         }
