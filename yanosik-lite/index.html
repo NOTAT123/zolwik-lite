@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🚗 Żółwik Lite</title>
+  <link rel="stylesheet" href="style.css" />
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  />
+  
+<link href="https://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" rel="stylesheet">
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css"
+  />
+  <link href="https://cdn.osmbuildings.org/4.1.1/OSMBuildings.css" rel="stylesheet">
+
+  <!-- Leaflet Control Geocoder CSS -->
+  <link
+  rel="stylesheet"
+  href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css"
+  />
+
+
+
+</head>
+<body>
+  <div id="map-section" class="section active">
+    <div id="map"></div>
+
+    <!-- 📋 Kwadracik informacyjny dla najbliższego zgłoszenia -->
+    <div class="info-box" id="infoBox">
+      <div class="danger-icon" id="dangerIcon">Ładowanie...</div>
+      <div class="danger-details">
+        <div id="dangerDirection">↗?</div>
+        <div id="dangerDistance">?</div>
+        <div id="dangerSpeed">?</div>
+      </div>
+      <div id="nextDanger">Następne: ?</div>
+      <button id="minimizeInfoBox">-</button>
+    </div>
+    <!-- 👍 Łapka w górę -->
+    <div id="likeButton" onclick="likeBtn()" style="position: fixed; top: 10px; left: 950px; cursor: pointer; background-color: green; padding: 5px 5px; outline-color: black; border-radius: 10px;">
+      👍
+    </div>
+
+    <div id="dislikeButton" onclick="dislikeBtn()" style="position: fixed; top: 10px; left: 990px; cursor: pointer; background-color: red; padding: 5px 5px; outline-color: black; border-radius: 10px;">
+      👎
+    </div>
+<div class="next-step-box" id="nextStepBox" style="display: none;">
+  <div class="next-step-icon" id="nextStepIcon">⬅️</div>
+  <div class="next-step-details">
+    <div id="nextStepDistance">500m</div>
+    <div id="nextStepDirection">Później: ➡️</div>
+    <div id="nextStepStreet" style="display: none;"></div>
+  </div>
+</div>
+
+
+<!-- Informacje o trasie -->
+<div class="route-info-box" id="routeInfoBox" style="display: none;">
+  <div id="routeDistance">Odległość: ?</div>
+  <div id="routeTime">Czas: ?</div>
+  <button id="endRouteButton">Zakończ trasę</button>
+</div>
+
+
+
+
+    <!-- 🛑 Kółko zgłoszenia -->
+    <div class="report-button" id="reportButton">📢</div>
+    <div class="report-menu" id="reportMenu">
+      <button class="reportbtns" onclick="report('fotoradar')">📸 Fotoradar</button>
+      <button class="reportbtns" onclick="report('kontrola')">👮 Kontrola</button>
+      <button class="reportbtns" onclick="report('roboty')">🚧 Roboty drogowe</button>
+      <button class="reportbtns" onclick="report('wypadek')">🚑 Wypadek</button>
+      <button class="reportbtns" onclick="report('nieoznakowany')">🚔 Nieoznakowany</button>
+    </div>
+
+    <div class="cancel-report" id="cancelReportBtn" style="display: none;"></div>
+
+    <!-- 🧭 Przycisk centrujący -->
+    <button class="center-button" onclick="centerMap()">🎯 Centruj</button>
+
+    <!-- 🔍 Przyciski powiększania i pomniejszania -->
+    <div class="zoom-controls">
+      <button onclick="zoomIn()">+</button>
+      <button onclick="zoomOut()">-</button>
+    </div>
+
+    <!-- Nawigacja użytkownika do celu -->
+    <div id="user-navigation">
+      <input type="text" id="destinationInput" placeholder="Wpisz cel..." />
+      <button onclick="navigateToDestination()">Nawiguj</button>
+    </div>
+
+    <!-- Przycisk ustawień -->
+    <button id="settingsButton" onclick="openSettings()" class="ustawieniabtn">⚙️</button>
+  </div>
+
+  <div id="settings-section" class="section">
+    <div id="settingsModal" class="modal">
+      <div class="modal-content">
+        <span class="close" onclick="closeSettings()">❌</span>
+        <h2>⚙️Ustawienia</h2>
+        <div class="tabs">
+          <button onclick="showTab('map')">🗺️ Mapa</button>
+          <button onclick="showTab('filters')">🚦 Filtry</button>
+        </div>
+        <div class="tab-content" id="tab-map">
+          <label>
+            <input type="checkbox" id="darkModeToggle" onchange="toggleDarkMode()" /> Tryb ciemny (beta)
+          </label>
+          <br />
+          <label>
+            <input type="checkbox" id="3dBuildingsToggle" onchange="toggle3dBuildings()" /> Budynki 2.5D
+          </label>
+          <label>
+            <input type="checkbox" id="3dViewToggle" onchange="toggle3dView()" /> Widok 3D
+          </label>
+        </div>
+        <div class="tab-content" id="tab-filters" style="display:none">
+          <label>
+            <input type="checkbox" checked /> Pokaż ruch drogowy
+          </label>
+          <br />
+          <label>
+            <input type="checkbox" checked /> Pokaż kontrole
+          </label>
+          <br />
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="ograniczenieborder" class="ograniczeniebordertext">
+  </div>
+  <div id="ograniczenie" class="ograniczenietext">
+    ?
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+
+  <script src="https://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>
+
+  <script src="https://cdn.osmbuildings.org/classic/0.2.2b/OSMBuildings-Leaflet.js"></script>
+
+  <!-- Leaflet Control Geocoder JS -->
+  <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+
+  <script src="script.js"></script>
+</body>
+</html>
