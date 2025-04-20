@@ -42,11 +42,12 @@
 
 ## 📷 Zrzuty ekranu
 
-![Widok mapy](images/zrzut1.jpg)  
-_Podgląd mapy z aktywnymi zagrożeniami i budynkami w 3D_
+![image](https://github.com/user-attachments/assets/1daa21b5-aa4a-4e57-8c82-8e33899a3c42) 
+_Podgląd mapy z aktywnymi zagrożeniami_
 
-![Panel ustawień](images/zrzut2.jpg)  
-_Zakładka ustawień mapy i zarządzania zgłoszeniami_
+![image](https://github.com/user-attachments/assets/c21e348a-12df-41e8-9572-00a7cf680454)
+
+_Podgląd okienka z zagrożeniem_
 
 ---
 
@@ -101,9 +102,14 @@ _Zakładka ustawień mapy i zarządzania zgłoszeniami_
  - Render 3D: OSM Buildings
  - Silnik mapy: Leaflet.js
 
+---
+## Jak uruchomić?
+ - Wchodzisz na stronę klikając [tutaj.](https://notat123.github.io/zolwik-lite/yanosik-lite/index.html)
+ - Klikasz "zezwalaj" (dane nie są przekazywane innym firmą/osobą!) ![image](https://github.com/user-attachments/assets/5578e444-bf99-4823-bbcc-ca445b34ee81)
+ - Klikasz "CENTRUJ" aby wycentrować mapę na twojej lokalizacji
+ - To tyle!
 
-DZIEKUJE ZA PRZECZYTANIE! PROJEKT MOZESZ STESTOWAĆ TU:
-https://notat123.github.io/zolwik-lite/yanosik-lite/index.html
 
+DZIEKUJE ZA PRZECZYTANIE! PROJEKT MOZESZ STESTOWAĆ KLIKAJĄC [TUTAJ](https://notat123.github.io/zolwik-lite/yanosik-lite/index.html)
 
 
